@@ -43,7 +43,7 @@ function start(): void {
 </script>
 
 <template>
-  <div>
+  <div class="new-game-view">
     <section class="sheet">
       <div class="field">
         <label for="table">Tischname (optional)</label>
@@ -62,7 +62,7 @@ function start(): void {
         />
       </div>
     </section>
-    <div class="fab">
+    <div class="fab fab-in-flow">
       <button class="primary-btn" type="button" :disabled="!canStart" @click="start">
         Spiel starten
       </button>

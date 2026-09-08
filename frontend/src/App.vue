@@ -38,7 +38,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="app-shell">
+  <div class="app-shell" :class="{ 'new-game-shell': route.name === 'new' }">
     <header class="topbar">
       <RouterLink v-if="backTo" class="back-link" :to="backTo">← {{ title }}</RouterLink>
       <span v-else></span>

@@ -74,8 +74,21 @@ a {
 
 .app-shell {
   width: min(760px, 100%);
+  min-height: 100dvh;
   margin: 0 auto;
   padding: 16px 16px 112px;
+}
+
+.app-shell.new-game-shell {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.new-game-view {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 .topbar {
@@ -495,6 +508,11 @@ a.ghost-btn:active {
   overflow-x: auto;
 }
 
+.scoreboard::before,
+.scoreboard::after {
+  content: none;
+}
+
 .scoreboard table {
   width: 100%;
   border-collapse: collapse;
@@ -657,6 +675,14 @@ a.ghost-btn:active {
   bottom: 20px;
   transform: translateX(-50%);
   width: min(720px, calc(100% - 32px));
+}
+
+.fab-in-flow {
+  position: static;
+  transform: none;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .muted {
