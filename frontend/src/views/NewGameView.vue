@@ -9,7 +9,7 @@ const store = useGameStore()
 
 const tableName = ref('')
 const targetScore = ref(DEFAULT_TARGET)
-const players = ref(['', ''])
+const players = ref(['', '', ''])
 
 const canStart = computed(
   () => players.value.filter((name) => name.trim()).length >= 2 && targetScore.value > 0,

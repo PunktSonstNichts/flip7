@@ -30,8 +30,11 @@ const cards = computed(() =>
     <Wordmark />
     <p class="tagline">Wer knackt die 200?</p>
 
-    <p v-if="cards.length === 0" class="sheet">
-      Noch keine Spiele. Leg ein neues Spiel an und trag die Karten nach jeder Runde ein.
+    <p v-if="cards.length === 0" class="sheet empty-state">
+      <span>
+        Noch keine Spiele. <br />
+        Hier siehst du alle Spiele, die du angelegt oder über einen Link besuchst hast.
+      </span>
     </p>
 
     <RouterLink
@@ -54,3 +57,15 @@ const cards = computed(() =>
     <RouterLink class="primary-btn fab" to="/games/new">Neues Spiel</RouterLink>
   </div>
 </template>
+
+<style scoped>
+.empty-state {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.empty-state span {
+  max-width: 480px;
+}
+</style>

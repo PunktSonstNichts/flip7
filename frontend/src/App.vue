@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
 import { RouterLink, RouterView, useRoute } from 'vue-router'
+import Wordmark from './components/Wordmark.vue'
 import { useGameStore } from './stores/game'
 
 const route = useRoute()
@@ -9,10 +10,12 @@ let stopWatch: (() => void) | undefined
 
 const statusLabel: Record<string, string> = {
   offline: 'Offline',
-  syncing: 'Sync…',
-  synced: 'Gespeichert',
   error: 'Sync fehlgeschlagen',
 }
+
+const showSyncError = computed(
+  () => store.syncStatus === 'offline' || store.syncStatus === 'error',
+)
 
 const backTo = computed(() => {
   if (route.name === 'round') return `/games/${String(route.params.id)}`
@@ -39,10 +42,22 @@ onUnmounted(() => {
 
 <template>
   <div class="app-shell" :class="{ 'new-game-shell': route.name === 'new' }">
-    <header class="topbar">
+    <header v-if="route.name !== 'home'" class="topbar">
       <RouterLink v-if="backTo" class="back-link" :to="backTo">← {{ title }}</RouterLink>
       <span v-else></span>
-      <span class="sync-pill" :class="store.syncStatus">{{ statusLabel[store.syncStatus] }}</span>
+      <div class="topbar-status">
+        <span
+          v-if="showSyncError"
+          class="sync-pill"
+          :class="store.syncStatus"
+          role="status"
+        >
+          {{ statusLabel[store.syncStatus] }}
+        </span>
+        <RouterLink class="compact-wordmark-link" to="/" aria-label="Zur Startseite">
+          <Wordmark compact />
+        </RouterLink>
+      </div>
     </header>
     <RouterView />
   </div>

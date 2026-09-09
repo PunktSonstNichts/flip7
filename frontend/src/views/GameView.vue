@@ -95,33 +95,35 @@ const winningScore = computed(() => {
     <section class="sheet scoreboard">
       <h2 class="player-name">{{ game.tableName || 'Rangliste' }}</h2>
       <p class="muted">Ziel: {{ game.targetScore }} Punkte</p>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th v-for="player in game.players" :key="player.id">{{ player.name }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="round in game.rounds" :key="round.id">
-            <td>R{{ round.number }}</td>
-            <td
-              v-for="player in game.players"
-              :key="`${round.id}-${player.id}`"
-              :class="{ flip7: flip7For(round, player.id) }"
-              :title="flip7For(round, player.id) ? 'Flip 7' : undefined"
-            >
-              <span>{{ entryFor(round, player.id)?.score ?? 0 }}</span>
-            </td>
-          </tr>
-          <tr class="totals">
-            <td>Gesamt</td>
-            <td v-for="player in game.players" :key="`total-${player.id}`">
-              {{ totals[player.id] ?? 0 }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scoreboard-table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th v-for="player in game.players" :key="player.id">{{ player.name }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="round in game.rounds" :key="round.id">
+              <td>R{{ round.number }}</td>
+              <td
+                v-for="player in game.players"
+                :key="`${round.id}-${player.id}`"
+                :class="{ flip7: flip7For(round, player.id) }"
+                :title="flip7For(round, player.id) ? 'Flip 7' : undefined"
+              >
+                <span>{{ entryFor(round, player.id)?.score ?? 0 }}</span>
+              </td>
+            </tr>
+            <tr class="totals">
+              <td>Gesamt</td>
+              <td v-for="player in game.players" :key="`total-${player.id}`">
+                {{ totals[player.id] ?? 0 }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <p v-if="game.rounds.length === 0" class="muted">Noch keine Runde eingetragen.</p>
     </section>
 
