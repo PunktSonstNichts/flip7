@@ -14,7 +14,6 @@ export interface Player {
 export interface RoundEntry {
   playerId: string
   busted: boolean
-  secondChance: boolean
   numberCards: number[]
   bonuses: number[]
   hasDouble: boolean

@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { emptyEntry, hasFlip7, scoreEntry, winnersFor, withScore } from './scoring'
+import type { Round } from '../types'
+import {
+  emptyEntry,
+  hasFlip7,
+  roundProjection,
+  scoreEntry,
+  winnersFor,
+  withScore,
+} from './scoring'
 
 describe('scoreEntry', () => {
   it('scores 0 when busted, even with cards', () => {
@@ -63,6 +71,51 @@ describe('hasFlip7', () => {
     expect(
       hasFlip7({ ...emptyEntry('p1'), busted: true, numberCards: [1, 2, 3, 4, 5, 6, 7] }),
     ).toBe(false)
+  })
+})
+
+describe('roundProjection', () => {
+  const rounds: Round[] = [
+    {
+      id: 'r1',
+      number: 1,
+      entries: [
+        { ...emptyEntry('ada'), score: 12 },
+        { ...emptyEntry('ben'), score: 20 },
+      ],
+    },
+    {
+      id: 'r2',
+      number: 2,
+      entries: [
+        { ...emptyEntry('ada'), score: 8 },
+        { ...emptyEntry('ben'), score: 4 },
+      ],
+    },
+  ]
+
+  it('adds a new draft round to all saved totals', () => {
+    const result = roundProjection(rounds, [
+      { ...emptyEntry('ada'), score: 10 },
+      { ...emptyEntry('ben'), score: 2 },
+    ])
+
+    expect(result.previous).toEqual({ ada: 20, ben: 24 })
+    expect(result.projected).toEqual({ ada: 30, ben: 26 })
+  })
+
+  it('excludes the saved round when previewing an edit', () => {
+    const result = roundProjection(
+      rounds,
+      [
+        { ...emptyEntry('ada'), score: 15 },
+        { ...emptyEntry('ben'), score: 0 },
+      ],
+      'r2',
+    )
+
+    expect(result.previous).toEqual({ ada: 12, ben: 20 })
+    expect(result.projected).toEqual({ ada: 27, ben: 20 })
   })
 })
 

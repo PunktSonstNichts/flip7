@@ -55,7 +55,6 @@ class RoundEntry(Base):
     round_id: Mapped[str] = mapped_column(ForeignKey("rounds.id", ondelete="CASCADE"))
     player_id: Mapped[str] = mapped_column(String)
     busted: Mapped[bool] = mapped_column(Boolean, default=False)
-    second_chance: Mapped[bool] = mapped_column(Boolean, default=False)
     number_cards: Mapped[str] = mapped_column(Text, default="[]")
     bonuses: Mapped[str] = mapped_column(Text, default="[]")
     has_double: Mapped[bool] = mapped_column(Boolean, default=False)

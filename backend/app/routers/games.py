@@ -44,7 +44,6 @@ def _replace_normalized(db: Session, game: models.Game, payload: schemas.GamePay
                     round_id=round_row.id,
                     player_id=entry.playerId,
                     busted=entry.busted,
-                    second_chance=entry.secondChance,
                     number_cards=json.dumps(entry.numberCards),
                     bonuses=json.dumps(entry.bonuses),
                     has_double=entry.hasDouble,

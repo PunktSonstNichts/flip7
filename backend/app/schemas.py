@@ -9,7 +9,6 @@ class PlayerPayload(BaseModel):
 class RoundEntryPayload(BaseModel):
     playerId: str
     busted: bool = False
-    secondChance: bool = False
     numberCards: list[int] = Field(default_factory=list)
     bonuses: list[int] = Field(default_factory=list)
     hasDouble: bool = False

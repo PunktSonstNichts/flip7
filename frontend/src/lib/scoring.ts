@@ -1,10 +1,9 @@
-import { FLIP7_BONUS, type RoundEntry } from '../types'
+import { FLIP7_BONUS, type Round, type RoundEntry } from '../types'
 
 export function emptyEntry(playerId: string): RoundEntry {
   return {
     playerId,
     busted: false,
-    secondChance: false,
     numberCards: [],
     bonuses: [],
     hasDouble: false,
@@ -50,6 +49,23 @@ export function playerTotals(entriesByRound: RoundEntry[][]): Record<string, num
     }
   }
   return totals
+}
+
+export function roundProjection(
+  rounds: Round[],
+  entries: RoundEntry[],
+  editingRoundId?: string,
+): { previous: Record<string, number>; projected: Record<string, number> } {
+  const previous = playerTotals(
+    rounds
+      .filter((round) => round.id !== editingRoundId)
+      .map((round) => round.entries),
+  )
+  const projected = { ...previous }
+  for (const entry of entries) {
+    projected[entry.playerId] = (projected[entry.playerId] ?? 0) + entry.score
+  }
+  return { previous, projected }
 }
 
 export function winnersFor(

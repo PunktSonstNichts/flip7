@@ -38,6 +38,16 @@ const totals = computed(() => {
   return playerTotals(game.value.rounds.map((round) => round.entries))
 })
 
+const rankedPlayers = computed(() => {
+  const current = game.value
+  if (!current) return []
+  return [...current.players].sort((a, b) => {
+    const diff = (totals.value[b.id] ?? 0) - (totals.value[a.id] ?? 0)
+    if (diff !== 0) return diff
+    return current.players.indexOf(a) - current.players.indexOf(b)
+  })
+})
+
 const winnerIds = computed(() => {
   if (!game.value) return []
   return winnersFor(totals.value, game.value.targetScore)
@@ -100,14 +110,14 @@ const winningScore = computed(() => {
           <thead>
             <tr>
               <th></th>
-              <th v-for="player in game.players" :key="player.id">{{ player.name }}</th>
+              <th v-for="player in rankedPlayers" :key="player.id">{{ player.name }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="round in game.rounds" :key="round.id">
               <td>R{{ round.number }}</td>
               <td
-                v-for="player in game.players"
+                v-for="player in rankedPlayers"
                 :key="`${round.id}-${player.id}`"
                 :class="{ flip7: flip7For(round, player.id) }"
                 :title="flip7For(round, player.id) ? 'Flip 7' : undefined"
@@ -117,7 +127,7 @@ const winningScore = computed(() => {
             </tr>
             <tr class="totals">
               <td>Gesamt</td>
-              <td v-for="player in game.players" :key="`total-${player.id}`">
+              <td v-for="player in rankedPlayers" :key="`total-${player.id}`">
                 {{ totals[player.id] ?? 0 }}
               </td>
             </tr>
