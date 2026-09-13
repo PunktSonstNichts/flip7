@@ -137,13 +137,8 @@ function save(): void {
   >
     <p class="tagline">
       <span>
-        {{
-          isSummary
-            ? 'Übersicht'
-            : activePlayer
-              ? activePlayer.name
-              : ''
-        }}
+        <em v-if="isSummary">Übersicht</em>
+        <template v-else>{{ activePlayer?.name ?? '' }}</template>
       </span>
     </p>
 
